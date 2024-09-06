@@ -14,8 +14,50 @@ $(() => {
         const url = `${urlBase}${accessToken}/search/${busqueda}`
 
         try {
+            $("#personajes-nombre").html("");
+            console.log($("#loading"));
+            $("#loading").removeClass("d-none");
             const response = await peticionFetch(url);
-            console.log(response);
+            if(response.response === "success") { // si consiguió personajes
+                for (const personaje of response.results) {
+                    $("#personajes-nombre").append(`
+                        <div class="col-3">
+                            <div class="card">
+                                <img src="${personaje.image.url}" class="card-img-top" alt="${personaje.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${personaje.name}</h5>
+                                    <div class="card-text">
+                                        <div>
+                                            <span class="fw-bold">Género:</span>
+                                            <span>${personaje.appearance.gender}</span>
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold">Estatura:</span>
+                                            <span>${personaje.appearance.height[1]}</span>
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold">Peso:</span>
+                                            <span>${personaje.appearance.weight[1]}</span>
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold">Raza:</span>
+                                            <span>${personaje.appearance.race}</span>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+            } else { // No consiguió personajes
+                $("#personajes-nombre").html(`
+                    <div class="col-12 text-danger fw-bold text-center">
+                        No se consiguieron personajes con su criterio de búsqueda
+                    </div>
+                `)
+            }
+            $("#loading").addClass("d-none");
         } catch (error) {
             alert("Ha sucedido un error, intente nuevamente")
         }
