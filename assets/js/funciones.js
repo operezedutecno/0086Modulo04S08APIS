@@ -9,3 +9,19 @@ export const peticionFetch = (url) => {
             })
     })
 }
+
+export const ajax = (url) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: {},
+            success: function(response) {
+                resolve(response)
+            },
+            error: function(error) {
+                reject(error)
+            }
+        })
+    })
+}
